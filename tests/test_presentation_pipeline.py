@@ -1,5 +1,7 @@
 import asyncio
+import sys
 import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import tempfile
 from fastapi import UploadFile
 from file_handling import save_img_to_temp_dir

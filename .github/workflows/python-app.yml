@@ -29,6 +29,9 @@ jobs:
     - name: Lint with black
       run: |
         black .
+    - name: Set PYTHONPATH
+      run: |
+        echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
     - name: Test with pytest
       run: |
         pytest
