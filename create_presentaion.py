@@ -22,7 +22,7 @@ async def generate_presentaion(prompt: str) -> str:
     }
 
     response = requests.post(url, headers=headers, json=payload)
-    return response.json().get('task_id')
+    return response.json().get("task_id")
 
 
 async def get_status(presentation_id: str) -> Union[dict, str]:
