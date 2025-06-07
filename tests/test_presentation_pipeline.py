@@ -1,13 +1,14 @@
-import asyncio
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import pytest
+import asyncio
 import tempfile
 from fastapi import UploadFile
 from file_handling import save_img_to_temp_dir
 from florence_model import get_context_caption
 
-
+@pytest.mark.skipif(os.getenv("LOCAL_MACHINE") == None, reason="can only bne run on a local machine")
 def test_evnvironemt_variable_returns_api_key():
     env_variable = os.getenv("SLIDESPEAK_API_KEY")
 
