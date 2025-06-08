@@ -1,6 +1,5 @@
 import os
 import requests
-from typing import Union
 
 
 async def generate_presentaion(prompt: str) -> str:
@@ -13,7 +12,7 @@ async def generate_presentaion(prompt: str) -> str:
     }
     payload = {
         "plain_text": prompt,
-        "length": 2,
+        "length": 1,
         "template": "default",
         "language": "ORIGINAL",
         "fetch_images": True,
@@ -25,7 +24,7 @@ async def generate_presentaion(prompt: str) -> str:
     return response.json().get("task_id")
 
 
-async def get_status(presentation_id: str) -> Union[dict, str]:
+async def get_status(presentation_id: str) -> dict:
     url = f"https://api.slidespeak.co/api/v1/task_status/{presentation_id}"
     headers = {
         "Content-Type": "application/json",
