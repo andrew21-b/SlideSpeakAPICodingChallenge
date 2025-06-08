@@ -12,7 +12,7 @@ async def generate_presentaion(prompt: str) -> str:
     }
     payload = {
         "plain_text": prompt,
-        "length": 1,
+        "length": 6,
         "template": "default",
         "language": "ORIGINAL",
         "fetch_images": True,
