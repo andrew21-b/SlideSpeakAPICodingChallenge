@@ -59,14 +59,21 @@ def test_save_img_to_temp_dir_creates_file():
 
     sample_image_path = "images/bottle.jpg"
     with open(sample_image_path, "rb") as f:
-        upload_file = UploadFile(filename=os.path.basename(sample_image_path), file=f)
+        upload_file = UploadFile(
+            filename=os.path.basename(sample_image_path),
+            file=f,
+        )
         with tempfile.TemporaryDirectory() as temp_dir:
             saved_img_path = asyncio.run(save_img_to_temp_dir(upload_file, temp_dir))
 
             assert saved_img_path is not None
             assert os.path.exists(saved_img_path)
             assert os.path.isfile(saved_img_path)
-            assert saved_img_path.endswith(".jpg") or saved_img_path.endswith(".png")
+            assert (
+                saved_img_path.endswith(".jpg")
+                or saved_img_path.endswith(".png")
+                or saved_img_path.endswith(".jpeg")
+            )
 
 
 def test_save_img_to_temp_dir_with_non_image():
@@ -166,9 +173,7 @@ def test_manage_job_queue_adds_and_limits(monkeypatch):
     manage_job_queue(DummyRequest, new_job)
 
     assert len(DummyRequest.app.state.job_queue) == 5
-    assert (
-        DummyRequest.app.state.job_queue[0]["task_id"] == "id_1"
-    ) 
+    assert DummyRequest.app.state.job_queue[0]["task_id"] == "id_1"
 
 
 def test_get_queue_returns_updated_jobs(monkeypatch):
@@ -177,7 +182,6 @@ def test_get_queue_returns_updated_jobs(monkeypatch):
         {"task_id": "id_2", "task_status": "PENDING"},
     ]
 
-    
     import create_presentaion
 
     def mock_get_status(job_id):
