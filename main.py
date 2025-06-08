@@ -30,7 +30,7 @@ async def read_root():
 async def generate_presentation(image: UploadFile, request: Request):
     temp_dir = tempfile.TemporaryDirectory()
     saved_img_path = await save_img_to_temp_dir(image, temp_dir.name)
-    img_caption = await florence_model.get_context_caption(saved_img_path)
+    img_caption = florence_model.get_context_caption(saved_img_path)
     if (
         img_caption is None
         or img_caption == "Error generating caption from the florence model."
@@ -40,9 +40,15 @@ async def generate_presentation(image: UploadFile, request: Request):
 
     temp_dir.cleanup()
 
-    job_id = await create_presentaion.generate_presentaion(img_caption)
+    try:
+        job_id = create_presentaion.generate_presentaion(img_caption)
+    except Exception as e:
+        return {"error": f"Failed to generate presentation: {str(e)}"}
 
-    job = await create_presentaion.get_status(job_id)
+    try:
+        job = create_presentaion.get_status(job_id)
+    except Exception as e:
+        return {"error": f"Failed to get job status: {str(e)}"}
 
     manage_job_queue(request, job)
 
@@ -52,7 +58,7 @@ async def generate_presentation(image: UploadFile, request: Request):
 @app.get("/get_status/{presentation_id}")
 async def get_status(presentation_id: str):
     try:
-        return await create_presentaion.get_status(presentation_id)
+        return create_presentaion.get_status(presentation_id)
     except Exception as e:
         return {"error": str(e)}
 
@@ -63,7 +69,7 @@ async def get_queue(request: Request):
     new_job_queue = []
     for job in job_queue:
         job_id = job.get("task_id")
-        updated_job = await create_presentaion.get_status(job_id)
+        updated_job = create_presentaion.get_status(job_id)
         new_job_queue.append(updated_job)
     job_queue = new_job_queue
 

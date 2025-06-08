@@ -2,7 +2,7 @@ import os
 import requests
 
 
-async def generate_presentaion(prompt: str) -> str:
+def generate_presentaion(prompt: str) -> str:
     url = "https://api.slidespeak.co/api/v1/presentation/generate"
     headers = {
         "Content-Type": "application/json",
@@ -24,7 +24,7 @@ async def generate_presentaion(prompt: str) -> str:
     return response.json().get("task_id")
 
 
-async def get_status(presentation_id: str) -> dict:
+def get_status(presentation_id: str) -> dict:
     url = f"https://api.slidespeak.co/api/v1/task_status/{presentation_id}"
     headers = {
         "Content-Type": "application/json",

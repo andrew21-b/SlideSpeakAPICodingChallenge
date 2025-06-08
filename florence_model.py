@@ -4,7 +4,7 @@ import torch
 from transformers import AutoProcessor, AutoModelForCausalLM
 
 
-async def get_context_caption(image_path: str) -> str:
+def get_context_caption(image_path: str) -> str:
 
     if os.path.exists(image_path) is False:
         print(f"Image path {image_path} does not exist.")
@@ -37,7 +37,7 @@ async def get_context_caption(image_path: str) -> str:
             do_sample=False,
             num_beams=3,
         )
-        
+
         generated_text = processor.batch_decode(
             generated_ids, skip_special_tokens=False
         )[0]
