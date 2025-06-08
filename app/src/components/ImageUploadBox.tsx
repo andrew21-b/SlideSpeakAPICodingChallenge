@@ -3,13 +3,18 @@ import { useRef } from "react";
 interface ImageUploadBoxProps {
   onImageChange: (file: File | null) => void;
   previewUrl: string | null;
+  disabled?: boolean;
 }
 
-export default function ImageUploadBox({ onImageChange, previewUrl }: ImageUploadBoxProps) {
-    const inputRef = useRef<HTMLInputElement>(null);
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+export default function ImageUploadBox({
+  onImageChange,
+  previewUrl,
+  disabled,
+}: ImageUploadBoxProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-            onImageChange(e.target.files[0]);
+      onImageChange(e.target.files[0]);
     } else {
       onImageChange(null);
     }
@@ -23,11 +28,18 @@ export default function ImageUploadBox({ onImageChange, previewUrl }: ImageUploa
           ref={inputRef}
           type="file"
           accept="image/*"
-          onChange={handleImageChange}
+          onChange={(e) => {
+            if (!disabled && e.target.files && e.target.files[0]) {
+              onImageChange(e.target.files[0]);
+            }
+          }}
           className="hidden"
+          disabled={disabled}
         />
         <span
-          className="inline-block px-4 py-2 bg-blue-600 rounded text-white hover:bg-blue-500 mt-2"
+          className={`inline-block px-4 py-2 bg-blue-600 rounded text-white hover:bg-blue-500 mt-2 ${
+            disabled ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
           Choose an image
         </span>
