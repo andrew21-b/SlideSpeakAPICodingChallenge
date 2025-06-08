@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import pytest
 import asyncio
 import tempfile
@@ -8,7 +8,10 @@ from fastapi import UploadFile
 from file_handling import save_img_to_temp_dir
 from florence_model import get_context_caption
 
-@pytest.mark.skipif(os.getenv("LOCAL_MACHINE") == None, reason="can only bne run on a local machine")
+
+@pytest.mark.skipif(
+    os.getenv("LOCAL_MACHINE") == None, reason="can only run on a local machine"
+)
 def test_evnvironemt_variable_returns_api_key():
     env_variable = os.getenv("SLIDESPEAK_API_KEY")
 
@@ -24,6 +27,18 @@ def test_florence_model_returns_caption():
 
     assert isinstance(caption, str)
     assert len(caption) > 0
+
+
+def test_florence_model_with_invalid_image_path():
+
+    sample_image_path = "images/bottle_invalid.jpg"
+    caption = asyncio.run(get_context_caption(sample_image_path))
+
+    assert isinstance(caption, str)
+    assert (
+        caption == "Error: Image path does not exist."
+        or caption == "Error generating caption from the florence model."
+    )
 
 
 def test_save_img_to_temp_dir_creates_file():
