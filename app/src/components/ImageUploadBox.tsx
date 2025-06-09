@@ -12,14 +12,6 @@ export default function ImageUploadBox({
   disabled,
 }: ImageUploadBoxProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      onImageChange(e.target.files[0]);
-    } else {
-      onImageChange(null);
-    }
-  };
-
   return (
     <div className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-dashed border-gray-400 bg-zinc-700">
       <label className="cursor-pointer text-white">
